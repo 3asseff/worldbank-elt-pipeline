@@ -5,7 +5,7 @@ worldbank:
       type: bigquery
       method: service-account
       project: elias-wb-pipeline-2610
-      dataset: worldbank_analytics
-      keyfile: /opt/airflow/secrets/gcp-key.json
+      dataset: "{{ env_var('DBT_DATASET', 'worldbank_analytics') }}"
+      keyfile: "{{ env_var('DBT_KEYFILE', '/opt/airflow/secrets/gcp-key.json') }}"
       location: US
       threads: 4

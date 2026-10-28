@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      DBT_DATASET: ci_analytics
+      DBT_KEYFILE: ${{ github.workspace }}/gcp-key.json
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: pip install ruff "dbt-core==1.12.6" "dbt-bigquery==1.12.1"
+
+      - name: Lint Python
+        run: ruff check dags include
+
+      - name: Write GCP key
+        run: printf '%s' "$GCP_SA_KEY" > gcp-key.json
+
+      - name: dbt build (CI dataset)
+        working-directory: dbt_project
+        run: dbt build --profiles-dir .
