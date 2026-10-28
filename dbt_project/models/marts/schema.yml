@@ -16,17 +16,19 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('dim_countries')
-              field: country_iso3
+              arguments:
+                to: ref('dim_countries')
+                field: country_iso3
       - name: indicator_name
         tests:
           - accepted_values:
-              values:
-                - gdp_per_capita_usd
-                - population
-                - life_expectancy
-                - inflation_pct
-                - unemployment_pct
+              arguments:
+                values:
+                  - gdp_per_capita_usd
+                  - population
+                  - life_expectancy
+                  - inflation_pct
+                  - unemployment_pct
       - name: value
         tests: [not_null]
 
