@@ -6,6 +6,7 @@ sys.path.insert(0, "/opt/airflow")
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
 
+from include.alerts import notify_failure
 from include.bigquery_load import load_all
 from include.worldbank_extract import extract_all
 
@@ -16,9 +17,15 @@ DBT_DIR = "/opt/airflow/dbt_project"
 @dag(
     dag_id="worldbank_pipeline",
     start_date=datetime(2024, 1, 1),
-    schedule=None,
+    schedule="0 6 * * 1",  # every Monday at 06:00 UTC
     catchup=False,
-    default_args={"retries": 2, "retry_delay": timedelta(minutes=2)},
+    max_active_runs=1,
+    default_args={
+        "retries": 2,
+        "retry_delay": timedelta(minutes=2),
+        "execution_timeout": timedelta(minutes=20),
+        "on_failure_callback": notify_failure,
+    },
     tags=["worldbank"],
 )
 def worldbank_pipeline():

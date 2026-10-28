@@ -1,5 +1,6 @@
 x-airflow-common: &airflow-common
   build: .
+  env_file: .env
   user: "${AIRFLOW_UID:-50000}:0"
   environment:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
