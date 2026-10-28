@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: worldbank_raw
+    database: elias-wb-pipeline-2610
+    schema: worldbank_raw
+    tables:
+      - name: raw_indicators
+      - name: raw_countries

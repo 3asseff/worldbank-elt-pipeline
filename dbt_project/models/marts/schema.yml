@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dim_countries
+    columns:
+      - name: country_iso3
+        tests: [unique, not_null]
+      - name: region
+        tests: [not_null]
+
+  - name: fct_indicators
+    columns:
+      - name: indicator_key
+        tests: [unique, not_null]
+      - name: country_iso3
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_countries')
+              field: country_iso3
+      - name: indicator_name
+        tests:
+          - accepted_values:
+              values:
+                - gdp_per_capita_usd
+                - population
+                - life_expectancy
+                - inflation_pct
+                - unemployment_pct
+      - name: value
+        tests: [not_null]
+
+  - name: mart_lebanon_vs_gulf
+    columns:
+      - name: year
+        tests: [not_null]
+      - name: lebanon_value
+        tests: [not_null]

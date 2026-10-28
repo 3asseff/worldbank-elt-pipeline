@@ -1,0 +1,9 @@
+secrets/
+.env
+logs/
+__pycache__/
+target/
+dbt_packages/
+.venv/
+.DS_Store
+include/data/
