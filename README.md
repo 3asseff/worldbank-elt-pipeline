@@ -18,6 +18,24 @@ flowchart LR
     G[GitHub Actions CI] -.dbt build on PRs.-> H[(BigQuery<br/>ci_analytics)]
 ```
 
+## Screenshots
+
+**Airflow DAG** (all three tasks green)
+
+![Airflow graph](docs/images/airflow-graph.png)
+
+**A failing dbt test stops the pipeline** (extract and load succeed, `dbt_build` fails)
+
+![Airflow failed run](docs/images/airflow-failed.png)
+
+**CI blocks a broken change** (a deliberately failing dbt test on a pull request)
+
+![CI failing](docs/images/ci-failing.png)
+
+**CI passes on main**
+
+![CI passing](docs/images/ci-passing.png)
+
 ## Stack
 
 | Layer | Tool |
